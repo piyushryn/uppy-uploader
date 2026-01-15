@@ -6,11 +6,12 @@ const ImageKit = require("imagekit");
 const path = require('path');
 require('dotenv').config()
 
+const baseUrl = process.env.RAILWAY_PUBLIC_DOMAIN || `http://localhost:3020`;
+
 if (
   !process.env.IMAGEKIT_PUBLIC_KEY ||
   !process.env.IMAGEKIT_PRIVATE_KEY ||
-  !process.env.IMAGEKIT_URL_ENDPOINT ||
-  !process.env.SERVER_BASE_URL
+  !process.env.IMAGEKIT_URL_ENDPOINT 
 ) {
   console.log(
     `The .env file is not configured. Follow the instructions in the readme to configure the .env file. https://github.com/imagekit-samples/uppy-uploader. A step by step walkthrough of the code is also available at https://docs.imagekit.io/sample-projects/upload-widget/uppy-upload-widget/. If your are running this in Codesandbox, please add secrets in your fork.`
@@ -27,10 +28,6 @@ if (
   process.env.IMAGEKIT_URL_ENDPOINT
     ? ''
     : console.log('Add IMAGEKIT_URL_ENDPOINT to your .env file.');
-
-  process.env.SERVER_BASE_URL
-    ? ''
-    : console.log('Add SERVER_BASE_URL to your .env file.');
 
   process.exit();
 }
@@ -66,7 +63,7 @@ app.get("/auth", (req, res, next) => {
 app.get('/', (req, res) => {
   res.render(path.join(__dirname, "..", "client", "index"), {
     IMAGEKIT_PUBLIC_KEY: process.env.IMAGEKIT_PUBLIC_KEY,
-    SERVER_BASE_URL: process.env.SERVER_BASE_URL
+    SERVER_BASE_URL: baseUrl
   });
 })
 
@@ -87,8 +84,8 @@ const uppyOptions = {
     }
   },
   server: {
-    host: new URL(process.env.SERVER_BASE_URL).host, // the host including port e.g. localhost:3020
-    protocol: new URL(process.env.SERVER_BASE_URL).protocol.replace(":","") // it should be http or https
+    host: new URL(baseUrl).host, // the host including port e.g. localhost:3020
+    protocol: new URL(baseUrl).protocol.replace(":","") // it should be http or https
   },
   filePath: '/tmp',
   secret: 'some-secret',
@@ -110,4 +107,4 @@ app.use((err, req, res, next) => {
 
 companion.socket(app.listen(3020), uppyOptions)
 
-console.log(`Listening on ${process.env.SERVER_BASE_URL}`)
+console.log(`Listening on ${baseUrl}`)
