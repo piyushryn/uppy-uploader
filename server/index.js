@@ -7,7 +7,12 @@ const path = require('path');
 require('dotenv').config()
 
 const PORT = process.env.PORT || 3020;
-const baseUrl = process.env.RAILWAY_PUBLIC_DOMAIN || `http://localhost:${PORT}`;
+let baseUrl = process.env.RAILWAY_PUBLIC_DOMAIN || `http://localhost:${PORT}`;
+
+// Ensure baseUrl has a protocol (Railway provides domain without protocol)
+if (baseUrl && !baseUrl.startsWith('http://') && !baseUrl.startsWith('https://')) {
+  baseUrl = `https://${baseUrl}`;
+}
 
 if (
   !process.env.IMAGEKIT_PUBLIC_KEY ||
