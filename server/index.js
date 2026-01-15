@@ -6,7 +6,7 @@ const ImageKit = require("imagekit");
 const path = require('path');
 require('dotenv').config()
 
-const PORT = process.env.PORT || 3020;
+const PORT = process.env.PORT || 443;
 let baseUrl = process.env.RAILWAY_PUBLIC_DOMAIN || `http://localhost:${PORT}`;
 
 // Ensure baseUrl has a protocol (Railway provides domain without protocol)
