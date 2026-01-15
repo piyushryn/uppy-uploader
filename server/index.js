@@ -6,7 +6,8 @@ const ImageKit = require("imagekit");
 const path = require('path');
 require('dotenv').config()
 
-const baseUrl = process.env.RAILWAY_PUBLIC_DOMAIN || `http://localhost:3020`;
+const PORT = process.env.PORT || 3020;
+const baseUrl = process.env.RAILWAY_PUBLIC_DOMAIN || `http://localhost:${PORT}`;
 
 if (
   !process.env.IMAGEKIT_PUBLIC_KEY ||
@@ -105,6 +106,8 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ message: err.message, error: err })
 })
 
-companion.socket(app.listen(3020), uppyOptions)
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Listening on ${baseUrl}`)
+})
 
-console.log(`Listening on ${baseUrl}`)
+companion.socket(server, uppyOptions)
