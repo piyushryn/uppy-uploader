@@ -7,7 +7,7 @@ const path = require('path')
 require('dotenv').config()
 
 /* -------------------------------------------------
-   PORT (Railway injects this — DO NOT hardcode 443)
+   PORT 
 -------------------------------------------------- */
 const PORT = process.env.PORT || 3000
 
@@ -26,10 +26,25 @@ const baseUrl = isRailway
 if (
   !process.env.IMAGEKIT_PUBLIC_KEY ||
   !process.env.IMAGEKIT_PRIVATE_KEY ||
-  !process.env.IMAGEKIT_URL_ENDPOINT
+  !process.env.IMAGEKIT_URL_ENDPOINT 
 ) {
-  console.error('❌ Missing ImageKit environment variables')
-  process.exit(1)
+  console.log(
+    `The .env file is not configured. Follow the instructions in the readme to configure the .env file. https://github.com/imagekit-samples/uppy-uploader. A step by step walkthrough of the code is also available at https://docs.imagekit.io/sample-projects/upload-widget/uppy-upload-widget/. If your are running this in Codesandbox, please add secrets in your fork.`
+  );
+  console.log('');
+  process.env.IMAGEKIT_PUBLIC_KEY
+    ? ''
+    : console.log('Add IMAGEKIT_PUBLIC_KEY to your .env file.');
+
+  process.env.IMAGEKIT_PRIVATE_KEY
+    ? ''
+    : console.log('Add IMAGEKIT_PRIVATE_KEY to your .env file.');
+
+  process.env.IMAGEKIT_URL_ENDPOINT
+    ? ''
+    : console.log('Add IMAGEKIT_URL_ENDPOINT to your .env file.');
+
+  process.exit();
 }
 
 /* -------------------------------------------------
